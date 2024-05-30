@@ -1,7 +1,11 @@
+using Shared.Services.Abstract;
+using Shared.Services.Concrete;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<IEventStoreService, EventStoreService>();
 
 var app = builder.Build();
 
