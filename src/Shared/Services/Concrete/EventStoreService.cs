@@ -26,5 +26,13 @@ namespace Shared.Services.Concrete
 			data: JsonSerializer.SerializeToUtf8Bytes(@event)
 			);
 
+		// Belirli bir stream'e abone olmak için kullanılır.
+		public Task SubscribeToStreamAsync(string streamName, Func<StreamSubscription, ResolvedEvent, CancellationToken, Task> eventAppend)
+		=> Client.SubscribeToStreamAsync(
+			streamName: streamName,
+			start:FromStream.Start, //Başlangıçtan itibaren eventleri almak için
+			eventAppeared: eventAppend,
+			subscriptionDropped:(streamSubscription, subscriptionDroppedReason, exception)=> Console.WriteLine("Disconnected!") // Abonelik düşerse
+			);
 	}
 }

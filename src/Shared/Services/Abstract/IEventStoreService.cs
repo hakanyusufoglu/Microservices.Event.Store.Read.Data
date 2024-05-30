@@ -10,5 +10,8 @@ namespace Shared.Services.Abstract
 
 		//Verilen evente karşı event data verecektir.
 		EventData GenerateEventData(object @event);
+
+		//Belirli bir stream'e abone olmak için kullanılır.
+		Task SubscribeToStreamAsync(string streamName, Func<StreamSubscription, ResolvedEvent, CancellationToken, Task> eventAppend);
 	}
 }
