@@ -21,7 +21,7 @@ namespace Product.Event.Handler.Service.Services
 				object @event=JsonSerializer.Deserialize(resolvedEvent.Event.Data.ToArray(),Assembly.Load("Shared").GetTypes().FirstOrDefault(t=>t.Name == eventType));
 
 
-				var productCollection = mongoDbService.GetCollection<Models.Product>("Products");
+				var productCollection = mongoDbService.GetCollection<Shared.Models.Product>("Products");
 
 				switch (@event)
 				{

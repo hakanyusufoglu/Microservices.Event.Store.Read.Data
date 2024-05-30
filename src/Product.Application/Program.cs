@@ -6,6 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<IEventStoreService, EventStoreService>();
+//Amaç eventsource mantýðýný göstermek olduðu için doðrudan singleton kullanýldý. Projenin senaryosuna göre Scoped ya da Transient olarak da kullanýlabilir.
+builder.Services.AddSingleton<IMongoDbService, MongoDbService>();
 
 var app = builder.Build();
 
@@ -26,6 +28,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
 	name: "default",
-	pattern: "{controller=Products}/{action=CreateProduct}/{id?}");
+	pattern: "{controller=Products}/{action=Index}/{id?}");
 
 app.Run();

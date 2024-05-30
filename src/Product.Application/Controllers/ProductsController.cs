@@ -1,24 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver;
 using Product.Application.Models.ViewModels;
 using Shared.Events;
 using Shared.Services.Abstract;
 
 namespace Product.Application.Controllers
 {
-	public class ProductsController(IEventStoreService eventStoreService) : Controller
+	public class ProductsController(IEventStoreService eventStoreService, IMongoDbService mongoDbService) : Controller
 	{
-		public IActionResult Index()
+		public async Task<IActionResult> Index()
 		{
-			return View();
+			var productCollection = mongoDbService.GetCollection<Shared.Models.Product>("Products");
+			var products = await (await productCollection.FindAsync(_ => true)).ToListAsync();
+
+			return View(products);
 		}
 
 		//Ürün oluşturma sayfası
-		public IActionResult CreateProduct()
+		public IActionResult Create()
 		{
 			return View();
 		}
 		[HttpPost]
-		public async Task<IActionResult> CreateProduct(CreateProductVm model)
+		public async Task<IActionResult> Create(CreateProductVm model)
 		{
 			NewProductAddedEvent newProductAddedEvent = new()
 			{
@@ -31,7 +35,7 @@ namespace Product.Application.Controllers
 
 			await eventStoreService.AppendToStreamAsync("products-stream", new[] { eventStoreService.GenerateEventData(newProductAddedEvent) });
 
-			return RedirectToAction("CreateProduct");
+			return RedirectToAction("Index");
 		}
 	}
 }
