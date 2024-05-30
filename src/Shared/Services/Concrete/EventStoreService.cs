@@ -27,8 +27,8 @@ namespace Shared.Services.Concrete
 			);
 
 		// Belirli bir stream'e abone olmak için kullanılır.
-		public Task SubscribeToStreamAsync(string streamName, Func<StreamSubscription, ResolvedEvent, CancellationToken, Task> eventAppend)
-		=> Client.SubscribeToStreamAsync(
+		public async Task SubscribeToStreamAsync(string streamName, Func<StreamSubscription, ResolvedEvent, CancellationToken, Task> eventAppend)
+		=> await Client.SubscribeToStreamAsync(
 			streamName: streamName,
 			start:FromStream.Start, //Başlangıçtan itibaren eventleri almak için
 			eventAppeared: eventAppend,
