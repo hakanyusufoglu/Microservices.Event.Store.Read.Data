@@ -31,7 +31,7 @@ namespace Product.Application.Controllers
 
 			await eventStoreService.AppendToStreamAsync("products-stream", new[] { eventStoreService.GenerateEventData(newProductAddedEvent) });
 
-			return RedirectToAction("Index");
+			return RedirectToAction("CreateProduct");
 		}
 	}
 }
